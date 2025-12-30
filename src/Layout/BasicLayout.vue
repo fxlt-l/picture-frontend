@@ -31,5 +31,6 @@ import GlobalHeader from "@/components/GlobalHeader.vue";
 }
 .content{
   background: white;
+  padding-bottom: 80px;
 }
 </style>

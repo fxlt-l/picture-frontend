@@ -28,7 +28,7 @@
 </template>
 
 
-<script lang="ts" setup>
+<script  setup>
 import {reactive} from "vue";
 import {useLoginUserStore} from "@/stores/useLoginUserStore.js";
 import {userLoginUsingPost} from "@/api/userController.js";
