@@ -110,6 +110,7 @@ const fetchPictureDetail = async () => {
 }
 
 onMounted(() => {
+
   fetchPictureDetail()
 })
 
