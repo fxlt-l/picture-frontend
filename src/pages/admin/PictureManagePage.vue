@@ -117,7 +117,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import {doPictureReviewUsingPost, listPictureByPageUsingPost} from "@/api/pictureController";
-import {PIC_REVIEW_STATUS_ENUM, PIC_REVIEW_STATUS_MAP} from "../../picture";
+import {PIC_REVIEW_STATUS_ENUM, PIC_REVIEW_STATUS_MAP} from "../../constants/picture";
 
 const columns = [
   {
@@ -201,7 +201,9 @@ const pagination = computed(() => {
 const fetchData = async () => {
   const res = await listPictureByPageUsingPost({
     ...searchParams,
+    nullSpaceId: true,
   })
+
   if (res.data.data) {
     dataList.value = res.data.data.records ?? []
     total.value = res.data.data.total ?? 0
@@ -229,21 +231,6 @@ const doTableChange = (page: any) => {
   fetchData()
 }
 
-const handleReview = async (record: API.Picture, reviewStatus: number) => {
-  const reviewMessage = reviewStatus === PIC_REVIEW_STATUS_ENUM.PASS ? '管理员操作通过' : '管理员操作拒绝'
-  const res = await doPictureReviewUsingPost({
-    id: record.id,
-    reviewStatus,
-    reviewMessage,
-  })
-  if (res.data.code === 0) {
-    message.success('审核操作成功')
-    // 重新获取列表
-    fetchData()
-  } else {
-    message.error('审核操作失败，' + res.data.message)
-  }
-}
 
 </script>
 
