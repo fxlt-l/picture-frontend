@@ -16,7 +16,7 @@
           <a-descriptions :column="1">
             <a-descriptions-item label="作者">
               <a-space>
-                <a-avatar :size="24" :src="picture.user?.userAvatar" />
+                <a-avatar :size="24" :src="picture.user?.userAvatar"/>
                 <div>{{ picture.user?.userName }}</div>
               </a-space>
             </a-descriptions-item>
@@ -49,6 +49,15 @@
             <a-descriptions-item label="大小">
               {{ formatSize(picture.picSize) }}
             </a-descriptions-item>
+            <a-descriptions-item label="主色调">
+              <a-space>
+                {{ picture.picColor ?? '-' }}
+                <div
+                  v-if="picture.picColor"
+                  :style="{backgroundColor: toHexColor(picture.picColor),width: '16px',height: '16px'}"
+                />
+              </a-space>
+            </a-descriptions-item>
           </a-descriptions>
         </a-card>
       </a-col>
@@ -58,22 +67,21 @@
       <a-button v-if="canEdit" type="default" @click="doEdit">
         编辑
         <template #icon>
-          <EditOutlined />
+          <EditOutlined/>
         </template>
       </a-button>
       <a-button v-if="canEdit" danger @click="doDelete">
         删除
         <template #icon>
-          <DeleteOutlined />
+          <DeleteOutlined/>
         </template>
       </a-button>
       <a-button type="primary" @click="doDownload">
         免费下载
         <template #icon>
-          <DownloadOutlined />
+          <DownloadOutlined/>
         </template>
       </a-button>
-
     </a-space>
 
   </div>
@@ -86,7 +94,7 @@ import {deletePictureUsingPost, getPictureVoByIdUsingGet} from "@/api/pictureCon
 import {message} from "ant-design-vue";
 import {useLoginUserStore} from "@/stores/useLoginUserStore";
 import router from "@/router";
-import {downloadImage, formatSize} from "@/utils";
+import {downloadImage, formatSize, toHexColor} from "@/utils";
 
 const props = defineProps<{
   id: string | number
@@ -110,7 +118,6 @@ const fetchPictureDetail = async () => {
 }
 
 onMounted(() => {
-
   fetchPictureDetail()
 })
 
@@ -145,7 +152,7 @@ const doDelete = async () => {
   if (!id) {
     return
   }
-  const res = await deletePictureUsingPost({ id })
+  const res = await deletePictureUsingPost({id})
   if (res.data.code === 0) {
     message.success('删除成功')
   } else {
